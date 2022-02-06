@@ -20,3 +20,5 @@ app.use('/api', apiRouter);
 app.use('/users', usersRouter);
 
 module.exports = app;
+
+app.listen(5000);
