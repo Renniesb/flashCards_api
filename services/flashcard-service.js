@@ -5,6 +5,11 @@ const flashCardService = {
     .select('*')
     .orderBy('id')
   },
+  getAllCards(db){
+    return db
+    .from('cards')
+    .select('*').orderBy('id')
+  },
   getCards(db, deckNum){
     return db
     .from('cards')

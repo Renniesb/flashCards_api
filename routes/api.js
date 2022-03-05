@@ -47,6 +47,13 @@ router.get('/decks/:deckNum/cards', (req,res,next)=>{
     })
     .catch(next)
 })
+router.get('/cards', (req,res,next)=>{
+  deckService.getAllCards(req.app.get('db'),req.params.deckNum)
+  .then(cards => {
+    res.json(cards) 
+  })
+  .catch(next)
+})
 router.post('/cards', jsonBodyParser, function(req,res,next){
     const {term, definition, deckid} = req.body
     const newCard = {term, definition, deckid}
@@ -127,6 +134,21 @@ router.patch('/cards/:id',jsonBodyParser, (req, res, next)=>{
 })
 router.delete('/decks/:id',(req, res, next) => {
   deckService.deleteDeck(
+    req.app.get('db'),
+    req.params.id
+  )
+    .then((data) => {
+      if (!data) {
+        return res.status(404).json({
+          error: { message: `Deck doesn't exist` }
+        })
+      }
+      res.status(204).json().end()
+    })
+    .catch(next)
+})
+router.delete('/cards/:id',(req, res, next) => {
+  deckService.deleteCard(
     req.app.get('db'),
     req.params.id
   )
