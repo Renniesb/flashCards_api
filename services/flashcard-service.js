@@ -51,7 +51,7 @@ const flashCardService = {
       .delete()
   },
   deleteCard(db, id){
-    return db('card')
+    return db('cards')
       .where({id})
       .delete()
   },

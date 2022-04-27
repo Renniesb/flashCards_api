@@ -30,8 +30,8 @@ router.route('/decks')
 })
 .post(jsonBodyParser,(req, res, next)=>{
 
-    const {deckname, deckdescription} = req.body
-    const newDeck = {deckname, deckdescription} 
+    const {deckname, deckdescription, quizid} = req.body;
+    const newDeck = {deckname, deckdescription,quizid} 
     deckService.insertDeck(req.app.get('db'), newDeck)
     .then(deck => {
       res
@@ -55,9 +55,8 @@ router.get('/cards', (req,res,next)=>{
   .catch(next)
 })
 router.post('/cards', jsonBodyParser, function(req,res,next){
-    const {term, definition, deckid} = req.body
-    const newCard = {term, definition, deckid}
-  
+    const {front, back, deckid} = req.body
+    const newCard = {front, back, deckid}
   
     for (const [key, value] of Object.entries(jsonBodyParser))
         if (value == null)
@@ -77,21 +76,18 @@ router.post('/cards', jsonBodyParser, function(req,res,next){
 router.patch('/decks/:id',jsonBodyParser, (req, res, next)=>{
     const { 
       deckname,
-      deckdescription
+      deckdescription,
+      quizid
     } = req.body
     const deckToUpdate = {
         deckname,
-        deckdescription
+        deckdescription,
+        quizid
     }
   
     //make sure that the card contains all the required values
     const numberOfValues = Object.values(deckToUpdate).filter(Boolean).length
-    if(numberOfValues === 0)
-      return res.status(400).json({
-        error: {
-          message: `Request body must contain all relevant field values`
-        }
-      })
+    
     
     deckService.updateDeck(
       req.app.get('db'),
@@ -105,23 +101,15 @@ router.patch('/decks/:id',jsonBodyParser, (req, res, next)=>{
 })
 router.patch('/cards/:id',jsonBodyParser, (req, res, next)=>{
     const { 
-      term,
-      definition
+      front,
+      back
     } = req.body
     const cardToUpdate = {
-        term,
-        definition
+        front,
+        back
     }
   
-    //make sure that the card contains all the required values
-    const numberOfValues = Object.values(cardToUpdate).filter(Boolean).length
-    if(numberOfValues === 0)
-      return res.status(400).json({
-        error: {
-          message: `Request body must contain all relevant field values`
-        }
-      })
-    
+
     deckService.updateCard(
       req.app.get('db'),
       req.params.id,
