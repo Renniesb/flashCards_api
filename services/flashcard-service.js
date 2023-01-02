@@ -35,9 +35,9 @@ const flashCardService = {
         return rows[0]
       })
   },
-  updateDeck(db,id, newDeckInfo){
+  updateDeck(db,quizid, newDeckInfo){
     return db('decks')
-    .where({id})
+    .where({quizid})
     .update(newDeckInfo)
   },
   updateCard(db,id, newCardFields){

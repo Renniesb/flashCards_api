@@ -16,7 +16,7 @@ const serializeCard = card => ({
     id: card.id,
     term: card.term,
     definition: card.definition,
-    deckid: card.deckid
+    quizid: card.quizid
   })
 
 // get flashcards 
@@ -55,8 +55,8 @@ router.get('/cards', (req,res,next)=>{
   .catch(next)
 })
 router.post('/cards', jsonBodyParser, function(req,res,next){
-    const {front, back, deckid} = req.body
-    const newCard = {front, back, deckid}
+    const {front, back, quizid} = req.body
+    const newCard = {front, back, quizid}
   
     for (const [key, value] of Object.entries(jsonBodyParser))
         if (value == null)
@@ -73,7 +73,7 @@ router.post('/cards', jsonBodyParser, function(req,res,next){
     })
     .catch(next)
 })
-router.patch('/decks/:id',jsonBodyParser, (req, res, next)=>{
+router.patch('/decks/:quizid',jsonBodyParser, (req, res, next)=>{
     const { 
       deckname,
       deckdescription,
@@ -91,7 +91,7 @@ router.patch('/decks/:id',jsonBodyParser, (req, res, next)=>{
     
     deckService.updateDeck(
       req.app.get('db'),
-      req.params.id,
+      req.params.quizid,
       deckToUpdate
     )
     .then(()=>{
