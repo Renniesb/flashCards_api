@@ -40,8 +40,15 @@ router.route('/decks')
     })
     .catch(next)
 })
-router.get('/decks/:deckNum/cards', (req,res,next)=>{
-    deckService.getCards(req.app.get('db'),req.params.deckNum)
+router.get('/decks/:quizid', (req,res,next)=>{
+  deckService.getDeck(req.app.get('db'),req.params.quizid)
+  .then(deck => {
+    res.json(deck) 
+  })
+  .catch(next)
+})
+router.get('/decks/:quizid/cards', (req,res,next)=>{
+    deckService.getCards(req.app.get('db'),req.params.quizid)
     .then(cards => {
       res.json(cards) 
     })

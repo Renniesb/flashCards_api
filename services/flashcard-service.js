@@ -5,15 +5,21 @@ const flashCardService = {
     .select('*')
     .orderBy('id')
   },
+  getDeck(db, quizid){
+    return db
+    .from('decks')
+    .where('decks.quizid', quizid)
+    .select('*').orderBy('id')
+  },
   getAllCards(db){
     return db
     .from('cards')
     .select('*').orderBy('id')
   },
-  getCards(db, deckNum){
+  getCards(db, quizid){
     return db
     .from('cards')
-    .where('cards.deckid', deckNum)
+    .where('cards.quizid', quizid)
     .select('*').orderBy('id')
   },
   insertDeck(db, newDeck){
